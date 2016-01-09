@@ -4,10 +4,28 @@
 # Convert to Roman Numerals
 class Fixnum
   def to_roman
-    key = { '1' => 'I', '5' => 'V', '10' => 'X', '50' => 'L', '100' => 'C',
-      '500'  => 'D', '1000' => 'M'
+    numerals = []
+    input = self.to_s.split('').map(&:to_i)
+    input.unshift(0) until input.length == 4
+
+    hundreds = {
+      0 => '', 1 => 'C', 2 => 'CC', 3 => 'CCC', 4 => 'CD', 5 => 'D',
+      6 => 'DC', 7 => 'DCC', 8 => 'DCCC', 9 => 'CM'
+    }
+    tens = {
+      0 => '', 1 => 'X', 2 => 'XX', 3 => 'XXX', 4 => 'XL', 5 => 'L',
+      6 => 'LX', 7 => 'LXX', 8 => 'LXXX', 9 => 'XC'
+    }
+    ones = {
+      0 => '', 1 => 'I', 2 => 'II', 3 => 'III', 4 => 'IV', 5 => 'V',
+      6 => 'VI', 7 => 'VII', 8 => 'VIII', 9 => 'IX'
     }
 
-    self.to_s.gsub(/[0-10000]/, key)
+    numerals << 'M' * input[0] unless input[0] == 0
+    numerals << hundreds[input[1]]
+    numerals << tens[input[2]]
+    numerals << ones[input[3]]
+
+    numerals.join
   end
 end
